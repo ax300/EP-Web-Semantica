@@ -5,45 +5,116 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileManager;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Main {
+    static LinkedList<Cliente> listaClientes = new LinkedList<>();
 
+    static void exibeCliente(){
+
+
+        Iterator<Cliente> it =  listaClientes.iterator();
+
+        while(it.hasNext()){
+
+            System.out.println(it.next().nome);
+
+        }
+    }
     public static void main(String[] args) {
 
         OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
         model.read("E:\\Downloads\\centro_comercial\\Ontologia-CentroComercial.ttl");
         //model.write(System.out, "TTL");
-        Query query = QueryFactory.create(
+        Query queryLoja = QueryFactory.create(
+
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                "PREFIX : <http://www.semanticweb.org/ax300/ontologies/2019/9/untitled-ontology-15#>\n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                        "PREFIX : <http://www.semanticweb.org/ax300/ontologies/2019/9/untitled-ontology-15#>\n" +
 
-//                        "SELECT DISTINCT ?Nome_Loja ?x " +
-//                        "WHERE {?x rdf:type :Lojas ." +
-//                        " ?x :Nome_Loja ?Nome_Loja.}"
-                "SELECT DISTINCT ?Atividade ?x" +
+                        "SELECT DISTINCT  ?Nome_Loja ?Atividade ?x " +
                         "WHERE {?x rdf:type :Lojas ." +
-                        "?x :Atividade ?Atividade.}"
-
+                        "?x :Nome_Loja ?Nome_Loja." +
+                        "?x :Atividade ?Atividade." +
+                       // "?x Vende ?Produtos." +
+//                        "?y rdf:type :Produtos" +
+                        "}"
         );
 
-        QueryExecution queryExecution = QueryExecutionFactory.create(query,model);
-        ResultSet resultSet  = queryExecution.execSelect();
-        System.out.println("batatao");
 
-        while (resultSet.hasNext()){
-            QuerySolution querySolution = resultSet.next();
+
+        Query queryCliente = QueryFactory.create(
+
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+                        "PREFIX : <http://www.semanticweb.org/ax300/ontologies/2019/9/untitled-ontology-15#>\n" +
+
+                        "SELECT DISTINCT  ?Nome_Indivíduo ?Interesse ?Idade ?RG ?Sexo ?x " +
+                        "WHERE {?x rdf:type :Cliente ." +
+                        "?x :Nome_Indivíduo ?Nome_Indivíduo." +
+                        "?x :Interesse ?Interesse." +
+                        "?x :Idade ?Idade." +
+                        "?x :RG ?RG." +
+                        "?x :Sexo ?Sexo." +
+                        "}"
+        );
+
+
+
+
+
+        QueryExecution queryExecutionLoja = QueryExecutionFactory.create(queryLoja, model);
+        ResultSet resultSetLoja = queryExecutionLoja.execSelect();
+
+        QueryExecution queryExecutionCliente = QueryExecutionFactory.create(queryCliente, model);
+        ResultSet resultSetCliente = queryExecutionCliente.execSelect();
+
+
+
+
+        System.out.println(resultSetCliente);
+
+        while (resultSetCliente.hasNext()) {
+            QuerySolution querySolution = resultSetCliente.next();
+
+            String nomeIndividuo  = querySolution.getLiteral("?Nome_Indivíduo").getString();
+            int idade = querySolution.getLiteral("?Idade").getInt();
+            String sexo = querySolution.getLiteral("?Sexo").getString();
+            int rg = querySolution.getLiteral("?RG").getInt();
+            String interesse = querySolution.getLiteral("?Interesse").getString();
+
+
+            Cliente cliente = new Cliente(nomeIndividuo,idade,rg,interesse,sexo);
+            listaClientes.add(cliente);
+
+
+            //System.out.println(querySolution);
+        }
+
+
+
+        while (resultSetLoja.hasNext()) {
+            QuerySolution querySolution = resultSetLoja.next();
+            //System.out.println(querySolution);
+            String nomeLoja  = querySolution.getLiteral("?Nome_Loja").getString();
+            String atividade = querySolution.getLiteral("?Atividade").getString();
             System.out.println(querySolution);
-            String name = querySolution.getLiteral("?Atividade").getString();
             //int idade = querySolution.getLiteral("idade").getInt();
-           //Cliente cliente = new Cliente();
+            //Cliente cliente = new Cliente();
             //cliente.setNome(name);
             //cliente.setIdade(idade);
-            System.out.println("batata");
-            System.out.println(querySolution);
+            //System.out.println("batata");
+//             System.out.println(atividade);
+
+
+
+            //System.out.println(querySolution);
         }
+
+
+
 /*
 """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -63,9 +134,8 @@ public class Main {
 
     """
  */
-       // LinkedList<Loja.Produtos> listaProdutos = new LinkedList<>();
-        //Loja primeira = new Loja();
-        //Loja.Produtos A = new Loja.Produtos("a", 10);
-        //listaProdutos.add(A);
+        exibeCliente();
+
+
     }
 }
