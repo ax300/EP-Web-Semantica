@@ -13,25 +13,36 @@ public class Main {
     public static void main(String[] args) {
 
         OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-        model.read("E:\\Downloads\\centro_comercial\\CentroCormercial.ttl");
-
+        model.read("E:\\Downloads\\centro_comercial\\Ontologia-CentroComercial.ttl");
+        //model.write(System.out, "TTL");
         Query query = QueryFactory.create(
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                "PREFIX : <http://www.semanticweb.org/mikae/ontologies/2019/9/centro_comercial#>\n" +
-                        "SELECT "
+                "PREFIX : <http://www.semanticweb.org/ax300/ontologies/2019/9/untitled-ontology-15#>\n" +
+
+//                        "SELECT DISTINCT ?Nome_Loja ?x " +
+//                        "WHERE {?x rdf:type :Lojas ." +
+//                        " ?x :Nome_Loja ?Nome_Loja.}"
+                "SELECT DISTINCT ?Atividade ?x" +
+                        "WHERE {?x rdf:type :Lojas ." +
+                        "?x :Atividade ?Atividade.}"
+
         );
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query,model);
         ResultSet resultSet  = queryExecution.execSelect();
+        System.out.println("batatao");
 
         while (resultSet.hasNext()){
             QuerySolution querySolution = resultSet.next();
-            String name = querySolution.getLiteral("name").getString();
-            int idade = querySolution.getLiteral("idade").getInt();
-            Cliente cliente = new Cliente();
-            cliente.setNome(name);
-            cliente.setIdade(idade);
+            System.out.println(querySolution);
+            String name = querySolution.getLiteral("?Atividade").getString();
+            //int idade = querySolution.getLiteral("idade").getInt();
+           //Cliente cliente = new Cliente();
+            //cliente.setNome(name);
+            //cliente.setIdade(idade);
+            System.out.println("batata");
+            System.out.println(querySolution);
         }
 /*
 """
