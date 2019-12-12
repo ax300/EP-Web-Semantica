@@ -1,7 +1,7 @@
 public class Produto {
 
     String nome;
-    int valor;
+    double valor;
 
     public String getNome() {
         return nome;
@@ -11,7 +11,7 @@ public class Produto {
         this.nome = nome;
     }
 
-    public int getValor() {
+    public double getValor() {
         return valor;
     }
 
@@ -19,7 +19,7 @@ public class Produto {
         this.valor = valor;
     }
 
-    public Produto(String nome, int valor) {
+    public Produto(String nome, double valor) {
         this.nome = nome;
         this.valor = valor;
     }

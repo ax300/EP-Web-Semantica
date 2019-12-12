@@ -22,7 +22,7 @@ public class Loja {
         this.nome = nome;
     }
 
-    public Loja (String nome, String atividade, LinkedList<String> produtos){
+    public Loja (String nome, String atividade, LinkedList<Produto> produtos){
         this.nome = nome;
         this.atividade = atividade;
     }

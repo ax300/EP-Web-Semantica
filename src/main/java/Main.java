@@ -11,18 +11,34 @@ import java.util.Queue;
 
 public class Main {
     static LinkedList<Cliente> listaClientes = new LinkedList<>();
+    static LinkedList<Loja> listaLoja = new LinkedList<>();
 
-    static void exibeCliente(){
+
+    static void exibeCliente() {
 
 
-        Iterator<Cliente> it =  listaClientes.iterator();
+        Iterator<Cliente> it = listaClientes.iterator();
 
-        while(it.hasNext()){
+        while (it.hasNext()) {
 
             System.out.println(it.next().nome);
 
         }
     }
+
+    static void exibeLoja(){
+        Iterator<Loja> it = listaLoja.iterator();
+        while (it.hasNext()) {
+
+            System.out.println(it.next().nome);
+
+
+            //System.out.println(it.next().produtos);
+
+        }
+
+    }
+
     public static void main(String[] args) {
 
         OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
@@ -45,7 +61,6 @@ public class Main {
         );
 
 
-
         Query queryCliente = QueryFactory.create(
 
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
@@ -63,9 +78,6 @@ public class Main {
         );
 
 
-
-
-
         QueryExecution queryExecutionLoja = QueryExecutionFactory.create(queryLoja, model);
         ResultSet resultSetLoja = queryExecutionLoja.execSelect();
 
@@ -73,21 +85,19 @@ public class Main {
         ResultSet resultSetCliente = queryExecutionCliente.execSelect();
 
 
-
-
         System.out.println(resultSetCliente);
 
         while (resultSetCliente.hasNext()) {
             QuerySolution querySolution = resultSetCliente.next();
 
-            String nomeIndividuo  = querySolution.getLiteral("?Nome_Indivíduo").getString();
+            String nomeIndividuo = querySolution.getLiteral("?Nome_Indivíduo").getString();
             int idade = querySolution.getLiteral("?Idade").getInt();
             String sexo = querySolution.getLiteral("?Sexo").getString();
             int rg = querySolution.getLiteral("?RG").getInt();
             String interesse = querySolution.getLiteral("?Interesse").getString();
 
 
-            Cliente cliente = new Cliente(nomeIndividuo,idade,rg,interesse,sexo);
+            Cliente cliente = new Cliente(nomeIndividuo, idade, rg, interesse, sexo);
             listaClientes.add(cliente);
 
 
@@ -95,12 +105,19 @@ public class Main {
         }
 
 
-
         while (resultSetLoja.hasNext()) {
             QuerySolution querySolution = resultSetLoja.next();
             System.out.println(querySolution);
-            String nomeLoja  = querySolution.getLiteral("?Nome_Loja").getString();
+            String nomeLoja = querySolution.getLiteral("?Nome_Loja").getString();
             String atividade = querySolution.getLiteral("?Atividade").getString();
+            String vende = querySolution.getLiteral("?Nome_Vende").getString();
+            double preco = querySolution.getLiteral("?Preço_Vende").getDouble();
+
+            Produto produto = new Produto(vende,preco);
+            LinkedList<Produto> produtos = new LinkedList<>();
+            produtos.add(produto);
+            Loja loja  = new Loja(nomeLoja,atividade,produtos);
+            listaLoja.add(loja);
 
             //System.out.println(querySolution);
             //int idade = querySolution.getLiteral("idade").getInt();
@@ -109,7 +126,6 @@ public class Main {
             //cliente.setIdade(idade);
             //System.out.println("batata");
 //             System.out.println(atividade);
-
 
 
             //System.out.println(querySolution);
@@ -137,6 +153,7 @@ public class Main {
     """
  */
         exibeCliente();
+        exibeLoja();
 
 
     }
