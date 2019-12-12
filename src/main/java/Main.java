@@ -34,12 +34,13 @@ public class Main {
                         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                         "PREFIX : <http://www.semanticweb.org/ax300/ontologies/2019/9/untitled-ontology-15#>\n" +
 
-                        "SELECT DISTINCT  ?Nome_Loja ?Atividade ?x " +
+                        "SELECT DISTINCT  ?Nome_Loja ?Atividade ?Vende ?x ?Nome_Vende ?Preço_Vende " +
                         "WHERE {?x rdf:type :Lojas ." +
                         "?x :Nome_Loja ?Nome_Loja." +
                         "?x :Atividade ?Atividade." +
-                       // "?x Vende ?Produtos." +
-//                        "?y rdf:type :Produtos" +
+                        "?x :Vende ?Vende." +
+                        "?Vende :Nome_Produto ?Nome_Vende." +
+                        "?Vende :Preço ?Preço_Vende" +
                         "}"
         );
 
@@ -97,10 +98,11 @@ public class Main {
 
         while (resultSetLoja.hasNext()) {
             QuerySolution querySolution = resultSetLoja.next();
-            //System.out.println(querySolution);
+            System.out.println(querySolution);
             String nomeLoja  = querySolution.getLiteral("?Nome_Loja").getString();
             String atividade = querySolution.getLiteral("?Atividade").getString();
-            System.out.println(querySolution);
+
+            //System.out.println(querySolution);
             //int idade = querySolution.getLiteral("idade").getInt();
             //Cliente cliente = new Cliente();
             //cliente.setNome(name);
