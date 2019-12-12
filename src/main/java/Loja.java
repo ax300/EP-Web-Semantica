@@ -2,22 +2,29 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 public class Loja {
-    LinkedHashMap<String, Integer> produtos = new LinkedHashMap<>();
     String atividade;
-
-    public void setAtividade(String atividade) {
-        this.atividade = atividade;
-    }
+    String nome;
+    LinkedList<Produto> produtos = new LinkedList<Produto>();
 
     public String getAtividade() {
         return atividade;
     }
 
-    public LinkedHashMap getProdutos (){
-        return produtos;
+    public void setAtividade(String atividade) {
+        this.atividade = atividade;
     }
 
-    public void setProdutos(String produto, int valor) {
-        this.produtos.put(produto,valor);
+    public String getNome() {
+        return nome;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Loja (String nome, String atividade, LinkedList<String> produtos){
+        this.nome = nome;
+        this.atividade = atividade;
+    }
+
 }

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EP Web Semantica.iml" filepath="$PROJECT_DIR$/EP Web Semantica.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EP-Web-Semantica.iml" filepath="$PROJECT_DIR$/EP-Web-Semantica.iml" />
     </modules>
   </component>
 </project>
